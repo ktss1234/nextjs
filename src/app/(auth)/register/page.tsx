@@ -2,6 +2,7 @@
 import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button } from "@mui/material"
 import React from 'react'
 import * as Icons from "@mui/icons-material/";
+import { Controller, useForm } from "react-hook-form";
 
 interface User {
   username: string;
@@ -12,14 +13,16 @@ interface User {
 type Props = {}
 
 export default function Register({ }: Props) {
-  const [user, setUser] = React.useState<User>({ username: "", password: "" })
+  const initialValue: User = { username: "", password: "" };
+  const { control, handleSubmit } = useForm<User>({ defaultValues: initialValue })
   const showForm = () => {
-    return <form onSubmit={() => {
-      alert(JSON.stringify(user))
-    }}>
+    return <form onSubmit={handleSubmit((value: User) => {
+      alert(JSON.stringify(value))
+    })}>
       {/* Username */}
-      <TextField
-        onChange={e => { setUser({ username: e.target.value, password: user.password }) }}
+
+      <Controller name="username" control={control} render={({ field }) => (<TextField
+        {...field}
         variant="outlined"
         margin="normal"
         fullWidth
@@ -33,24 +36,29 @@ export default function Register({ }: Props) {
         label="Username"
         autoComplete="email"
         autoFocus
-      />
+      />)
+
+      }></Controller>
       {/* password */}
-      <TextField
-        onChange={e => { setUser({ username: user.username, password: e.target.value }) }}
-        variant="outlined"
-        margin="normal"
-        fullWidth
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Icons.Password />
-            </InputAdornment>
-          ),
-        }}
-        label="password"
-        autoComplete="Password"
-        autoFocus
-      />
+      <Controller name="password" control={control} render={({ field }) => (
+        <TextField
+          {...field}
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Icons.Password />
+              </InputAdornment>
+            ),
+          }}
+          label="password"
+          autoComplete="Password"
+          autoFocus
+        />
+      )}></Controller>
+
       <Button
         className="mt-8"
         type="submit"
@@ -69,7 +77,7 @@ export default function Register({ }: Props) {
       >
         Cancel
       </Button>
-    </form>;
+    </form >;
   }
   return (
     <Box className="flex justify-center items-center">

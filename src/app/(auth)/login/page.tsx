@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 interface User {
   username: string;
@@ -17,10 +18,15 @@ type Props = {}
 export default function Login({ }: Props) {
   const router = useRouter();
   const initialValue: User = { username: "", password: "" };
+
   const formValidateSchema = Yup.object().shape({
     username: Yup.string().required("Username is required").trim(),
     password: Yup.string().required("Password is required").trim(),
   });
+
+  const reducer = useSelector((state:any) => state.userReducer )
+
+
   const { control, handleSubmit, formState: { errors } } = useForm<User>({ defaultValues: initialValue, resolver: yupResolver(formValidateSchema) })
 
   const showForm = () => {
@@ -83,7 +89,7 @@ export default function Login({ }: Props) {
       </Button>
       <Button
         className="mt-4"
-        onClick={() => { router.push("/register")}}
+        onClick={() => { router.push("/register") }}
         type="button"
         fullWidth
         variant="outlined"
@@ -97,7 +103,7 @@ export default function Login({ }: Props) {
       <Card className="max-w-[345px] mt-[100px]">
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Login
+            Login({reducer.count})
           </Typography>
           {showForm()}
         </CardContent>

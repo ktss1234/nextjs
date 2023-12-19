@@ -3,13 +3,23 @@ import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button }
 import React from 'react'
 import * as Icons from "@mui/icons-material/";
 
+interface User {
+  username: string;
+  password: string;
+}
+
+
 type Props = {}
 
 export default function Register({ }: Props) {
+  const [user, setUser] = React.useState<User>({ username: "", password: "" })
   const showForm = () => {
-    return <form >
+    return <form onSubmit={() => {
+      alert(JSON.stringify(user))
+    }}>
       {/* Username */}
       <TextField
+        onChange={e => { setUser({ username: e.target.value, password: user.password }) }}
         variant="outlined"
         margin="normal"
         fullWidth
@@ -26,6 +36,7 @@ export default function Register({ }: Props) {
       />
       {/* password */}
       <TextField
+        onChange={e => { setUser({ username: user.username, password: e.target.value }) }}
         variant="outlined"
         margin="normal"
         fullWidth
@@ -40,24 +51,24 @@ export default function Register({ }: Props) {
         autoComplete="Password"
         autoFocus
       />
-          <Button
-          className="mt-8"
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          Create
-        </Button>
-         <Button
-          className="mt-4"
-          onClick={() => {}}
-          type="button"
-          fullWidth
-          variant="outlined"
-        >
-          Cancel
-        </Button>
+      <Button
+        className="mt-8"
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+      >
+        Create
+      </Button>
+      <Button
+        className="mt-4"
+        onClick={() => { }}
+        type="button"
+        fullWidth
+        variant="outlined"
+      >
+        Cancel
+      </Button>
     </form>;
   }
   return (

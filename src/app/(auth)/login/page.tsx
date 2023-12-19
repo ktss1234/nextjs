@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { userSelect } from "@/store/slices/userSlice";
+
+import { add, userSelect } from "@/store/slices/userSlice";
+import { useAppDispatch } from "@/store/store";
 
 interface User {
   username: string;
@@ -27,7 +28,7 @@ export default function Login({ }: Props) {
   });
 
   const reducer = useSelector(userSelect)
-
+  const dispatch = useAppDispatch()
 
   const { control, handleSubmit, formState: { errors } } = useForm<User>({ defaultValues: initialValue, resolver: yupResolver(formValidateSchema) })
 
@@ -91,7 +92,9 @@ export default function Login({ }: Props) {
       </Button>
       <Button
         className="mt-4"
-        onClick={() => { router.push("/register") }}
+        onClick={() => { 
+          dispatch(add()); 
+          router.push("/register") }}
         type="button"
         fullWidth
         variant="outlined"

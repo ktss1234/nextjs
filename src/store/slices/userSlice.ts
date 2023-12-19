@@ -3,9 +3,14 @@ import { RootState } from "../store";
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { count: 10 },
-  reducers: {},
+  initialState: { count: 0 },
+  reducers: {
+    add: (state) => {
+      state.count++;
+    },
+  },
 });
 
 export default userSlice.reducer;
-export const userSelect = (state: RootState) => state.userReducer; 
+export const { add } = userSlice.actions;
+export const userSelect = (state: RootState) => state.userReducer;

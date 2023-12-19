@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./_conponents/common/AuthProviders";
 import ThemeRegistry from "./_conponents/ThemeRegistry/ThemeRegistry";
+import ReduxProvider from "./_conponents/common/ReduProvider";
 
 
 
@@ -24,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <ThemeRegistry>
-            {children}
-          </ThemeRegistry>
-        </AuthProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <ThemeRegistry>
+              {children}
+            </ThemeRegistry>
+          </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

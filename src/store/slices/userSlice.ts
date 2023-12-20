@@ -6,8 +6,27 @@ export interface User {
   password: string;
 }
 
-export const signup = createAsyncThunk(
-  "user/signup",
+interface UserState {
+  username: string;
+  accessToken: string;
+  error?: string;
+  status: "fetching" | "success" | "failed" | "init";
+  isAuthenticated: boolean;
+  isAuthenticating: boolean;
+  count: 0;
+}
+
+const initialState: UserState = {
+  accessToken: "",
+  username: "",
+  status: "init",
+  isAuthenticated: false,
+  isAuthenticating: true,
+  count: 0,
+};
+
+export const signUp = createAsyncThunk(
+  "user/signp",
   async (credential: User) => {
     const response = await serverService.signUp(credential);
     return response;
@@ -16,15 +35,19 @@ export const signup = createAsyncThunk(
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { count: 0 },
+  initialState,
   reducers: {
     add: (state) => {
       state.count++;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(signup.fulfilled, (state, action) => {
+    builder.addCase(signUp.pending, (state) => {
+      state.status = "fetching";
+    });
+    builder.addCase(signUp.fulfilled, (state, action) => {
       state.count++;
+      state.status = "success";
     });
   },
 });

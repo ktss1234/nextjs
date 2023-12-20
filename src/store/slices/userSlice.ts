@@ -13,6 +13,7 @@ export const signup = createAsyncThunk(
     return response;
   }
 );
+
 const userSlice = createSlice({
   name: "user",
   initialState: { count: 0 },

@@ -8,13 +8,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-import { add, userSelect } from "@/store/slices/userSlice";
+import { User, add, userSelect } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 
-interface User {
-  username: string;
-  password: string;
-}
+
 
 type Props = {}
 

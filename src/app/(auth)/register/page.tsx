@@ -7,13 +7,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { add, userSelect } from "@/store/slices/userSlice";
+import { User, add, userSelect } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
-interface User {
-  username: string;
-  password: string;
-}
-
 
 type Props = {}
 
@@ -36,7 +31,6 @@ export default function Register({ }: Props) {
       alert(JSON.stringify(value))
     })}>
       {/* Username */}
-
       <Controller name="username" control={control} render={({ field }) => (
         <TextField
           {...field}
@@ -105,7 +99,7 @@ export default function Register({ }: Props) {
       <Card className="max-w-[345px] mt-[100px]">
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Register ({reducer.count})
+            Register ({reducer.count}) 
           </Typography>
           {showForm()}
         </CardContent>

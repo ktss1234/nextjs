@@ -1,10 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import * as serverService from "@/services/serviceServices";
-export interface User {
-  username: string;
-  password: string;
-}
 
 interface UserState {
   username: string;
@@ -25,9 +21,14 @@ const initialState: UserState = {
   count: 0,
 };
 
+interface SignAction {
+  username: string;
+  password: string;
+}
 export const signUp = createAsyncThunk(
-  "user/signp",
-  async (credential: User) => {
+  "user/signup",
+  async (credential: SignAction) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const response = await serverService.signUp(credential);
     return response;
   }
@@ -45,6 +46,7 @@ const userSlice = createSlice({
     builder.addCase(signUp.pending, (state) => {
       state.status = "fetching";
     });
+
     builder.addCase(signUp.fulfilled, (state, action) => {
       state.count++;
       state.status = "success";
@@ -54,4 +56,4 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 export const { add } = userSlice.actions;
-export const userSelect = (state: RootState) => state.userReducer;
+export const userSelector = (state: RootState) => state.userReducer;

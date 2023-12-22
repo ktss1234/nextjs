@@ -1,5 +1,5 @@
 "use client"
-import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button } from "@mui/material"
+import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button, Alert } from "@mui/material"
 import React from 'react'
 import * as Icons from "@mui/icons-material/";
 import { Controller, useForm } from "react-hook-form";
@@ -8,11 +8,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-import { User, add, userSelect } from "@/store/slices/userSlice";
+import { add, signIn, userSelector } from "@/store/slices/userSlice";
 import { useAppDispatch } from "@/store/store";
 
 
-
+interface User {
+  username: string;
+  password: string;
+}
 type Props = {}
 
 export default function Login({ }: Props) {
@@ -24,14 +27,23 @@ export default function Login({ }: Props) {
     password: Yup.string().required("Password is required").trim(),
   });
 
-  const reducer = useSelector(userSelect)
+  const reducer = useSelector(userSelector)
   const dispatch = useAppDispatch()
 
   const { control, handleSubmit, formState: { errors } } = useForm<User>({ defaultValues: initialValue, resolver: yupResolver(formValidateSchema) })
 
   const showForm = () => {
-    return <form onSubmit={handleSubmit((value: User) => {
-      alert(JSON.stringify(value))
+    return <form onSubmit={handleSubmit(async (value: User) => {
+      const result = await dispatch(signIn(value));
+      console.log(result);
+      console.log(signIn.fulfilled.match(result));
+      
+      if (signIn.fulfilled.match(result)) {
+        alert("login successfully")
+      }
+      // else if (signUp.rejected.match(result)) {
+      //   alert("login failed")
+      // }
     })}>
       {/* Username */}
 
@@ -73,25 +85,29 @@ export default function Login({ }: Props) {
             ),
           }}
           label="password"
+          type="password"
           autoComplete="Password"
           autoFocus
         />
       )}></Controller>
-
+      {reducer.status == "failed" && (<Alert severity="error">login failed</Alert>)
+      }
       <Button
         className="mt-8"
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
+        disabled={reducer.status == "fetching"}
       >
-        Create
+        Login
       </Button>
       <Button
         className="mt-4"
-        onClick={() => { 
-          dispatch(add()); 
-          router.push("/register") }}
+        onClick={() => {
+          dispatch(add());
+          router.push("/register")
+        }}
         type="button"
         fullWidth
         variant="outlined"

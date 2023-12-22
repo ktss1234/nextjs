@@ -51,6 +51,10 @@ const userSlice = createSlice({
       state.count++;
       state.status = "success";
     });
+    builder.addCase(signUp.rejected, (state, action) => {
+      state.count++;
+      state.status = "failed";
+    });
   },
 });
 

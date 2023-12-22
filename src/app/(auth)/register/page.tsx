@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -50,8 +51,14 @@ export default function Register({ }: Props) {
   const showForm = () => {
     return (
       <form
-        onSubmit={handleSubmit((value: User) => {
-          dispatch(signUp(value));
+        onSubmit={handleSubmit(async (value: User) => {
+          const result = await dispatch(signUp(value));
+          if (signUp.fulfilled.match(result)) {
+            alert("Register successfully")
+          }
+          // else if (signUp.rejected.match(result)) {
+          //   alert("Register failed")
+          // }
         })}
       >
         {/* Username */}
@@ -107,6 +114,9 @@ export default function Register({ }: Props) {
           )}
         />
 
+
+        {reducer.status == "failed" && (<Alert severity="error">Register failed</Alert>)
+        }
         <Button
           className="mt-8"
           type="submit"

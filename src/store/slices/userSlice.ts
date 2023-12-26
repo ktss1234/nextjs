@@ -80,19 +80,49 @@ const userSlice = createSlice({
       state.count++;
       state.status = "failed";
     });
-    // login
+
+    // Login
     builder.addCase(signIn.pending, (state) => {
       state.status = "fetching";
+      state.isAuthenticating = true;
     });
 
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.count++;
       state.status = "success";
+      state.accessToken = action.payload.token;
+      state.isAuthenticated = true;
+      state.isAuthenticating = false;
+      state.username = action.payload.username;
     });
-    builder.addCase(signIn.rejected, (state, action) => {
-      state.count++;
+
+    builder.addCase(signIn.rejected, (state) => {
       state.status = "failed";
+      state.accessToken = "";
+      state.isAuthenticated = false;
+      state.isAuthenticating = false;
     });
+
+    // // Logout
+    // builder.addCase(signOut.fulfilled, (state) => {
+    //   state.accessToken = "";
+    //   state.isAuthenticated = false;
+    //   state.isAuthenticating = false;
+    // });
+
+    // // Get Session
+    // builder.addCase(getSession.fulfilled, (state, action) => {
+    //   state.isAuthenticating = false;
+    //   if (
+    //     action.payload &&
+    //     action.payload.user &&
+    //     action.payload.user.token
+    //   ) {
+    //     state.accessToken = action.payload.user.token;
+    //     state.user = action.payload.user;
+    //     state.isAuthenticated = true;
+    //   }
+    // });
   },
 });
 

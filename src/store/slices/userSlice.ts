@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import * as serverService from "@/services/serviceServices";
 import httpClient from "@/utils/httpClient";
 import { AxiosRequestConfig } from "axios";
+import { UserData } from "@/models/user.model";
 
 interface UserState {
   username: string;
@@ -12,6 +13,7 @@ interface UserState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   count: 0;
+  user?: UserData;
 }
 
 const initialState: UserState = {
@@ -121,26 +123,26 @@ const userSlice = createSlice({
       state.isAuthenticating = false;
     });
 
-    // // Logout
+    // Logout
     builder.addCase(signOut.fulfilled, (state) => {
       state.accessToken = "";
       state.isAuthenticated = false;
       state.isAuthenticating = false;
     });
 
-    // // Get Session
-    // builder.addCase(getSession.fulfilled, (state, action) => {
-    //   state.isAuthenticating = false;
-    //   if (
-    //     action.payload &&
-    //     action.payload.user &&
-    //     action.payload.user.token
-    //   ) {
-    //     state.accessToken = action.payload.user.token;
-    //     state.user = action.payload.user;
-    //     state.isAuthenticated = true;
-    //   }
-    // });
+    // Get Session
+    builder.addCase(getSession.fulfilled, (state, action) => {
+      state.isAuthenticating = false;
+      if (
+        action.payload &&
+        action.payload.user &&
+        action.payload.user.token
+      ) {
+        state.accessToken = action.payload.user.token;
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      }
+    });
   },
 });
 

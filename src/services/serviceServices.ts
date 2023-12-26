@@ -11,7 +11,7 @@ export const signUp = async (user: signProps): Promise<any> => {
   return response.data;
 };
 export const signIn = async (user: signProps): Promise<SignIn> => {
-  const response = await httpClient.post<SignIn>("/authen/login", user, {
+  const response = await httpClient.post<SignIn>("/auth/signin", user, {
     baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
   });
   return response.data;

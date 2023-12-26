@@ -58,6 +58,10 @@ export const signIn = createAsyncThunk(
   }
 );
 
+export const signOut = createAsyncThunk("user/signout", async () => {
+  await serverService.signOut();
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -104,11 +108,11 @@ const userSlice = createSlice({
     });
 
     // // Logout
-    // builder.addCase(signOut.fulfilled, (state) => {
-    //   state.accessToken = "";
-    //   state.isAuthenticated = false;
-    //   state.isAuthenticating = false;
-    // });
+    builder.addCase(signOut.fulfilled, (state) => {
+      state.accessToken = "";
+      state.isAuthenticated = false;
+      state.isAuthenticating = false;
+    });
 
     // // Get Session
     // builder.addCase(getSession.fulfilled, (state, action) => {

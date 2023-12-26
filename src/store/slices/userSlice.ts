@@ -62,6 +62,20 @@ export const signOut = createAsyncThunk("user/signout", async () => {
   await serverService.signOut();
 });
 
+export const getSession = createAsyncThunk("user/fetchSession", async () => {
+  const response = await serverService.getSession();
+  // set access token
+  if (response) {
+    httpClient.interceptors.request.use((config?: AxiosRequestConfig | any) => {
+      if (config && config.headers && response.user) {
+        config.headers["Authorization"] = `Bearer ${response.user?.token}`;
+      }
+      return config;
+    });
+  }
+  return response;
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,

@@ -32,10 +32,10 @@ export const getSession = async (): Promise<GetSession> => {
   return response.data;
 };
 
-export const getProduct = async (keyword?: string): Promise<Array<any>> => {
+export const getProducts = async (keyword?: string): Promise<Array<any>> => {
   if (keyword) {
-    return await httpClient.get(`/stock/product/keyword/${keyword}`);
+    return (await httpClient.get(`/stock/product/keyword/${keyword}`)).data;
   }else{
-    return await httpClient.get(`/stock/product`);
+    return (await httpClient.get(`/stock/product`)).data;
   }
 };

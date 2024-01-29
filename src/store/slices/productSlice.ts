@@ -12,12 +12,14 @@ const initialState: ProductState = {
 };
 
 export const getProducts = createAsyncThunk(
-  "product/getProdcut",
+  "product/getProduct",
   async (keyword?: string) => {
-    const responce = await serverService.getProduct(keyword);
+    const responce = await serverService.getProducts(keyword);
     return responce;
   }
 );
+
+
 
 const productSlice = createSlice({
   name: "product",
@@ -26,8 +28,16 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.product = action.payload;
+      console.log(action.payload);
+      
     });
   },
 });
 
+
+
+
+
+
 export default productSlice.reducer;
+export const productSelector = (state: RootState) => state.productReducer ;

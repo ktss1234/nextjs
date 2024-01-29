@@ -132,12 +132,10 @@ const userSlice = createSlice({
 
     // Get Session
     builder.addCase(getSession.fulfilled, (state, action) => {
+      console.log(action.payload);
+
       state.isAuthenticating = false;
-      if (
-        action.payload &&
-        action.payload.user &&
-        action.payload.user.token
-      ) {
+      if (action.payload && action.payload.user && action.payload.user.token) {
         state.accessToken = action.payload.user.token;
         state.user = action.payload.user;
         state.isAuthenticated = true;

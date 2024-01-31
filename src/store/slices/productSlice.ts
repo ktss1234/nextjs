@@ -28,7 +28,6 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.product = action.payload;
-      console.log(action.payload);
       
     });
   },

@@ -11,6 +11,8 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { NumericFormat } from "react-number-format";
 import { Typography } from "@mui/material";
+import dayjs from "dayjs";
+
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -26,7 +28,7 @@ const columns: GridColDef[] = [
                     width={500}
                     alt="product image"
                     src={productImageURL(value)}
-                    style={{
+                    style={{ 
                         width: 70,
                         height: 70,
                         borderRadius: "5%",
@@ -67,10 +69,17 @@ const columns: GridColDef[] = [
 
         )
     },
-
+    {
+        field: "createdAt",
+        headerName: "Timestamp",
+        width: 230,
+        renderCell: ({ value }) => (
+            <Typography variant="body1">
+                {dayjs(value).format("DD/MM/YYYY HH:mm")}
+            </Typography>
+        ),
+    },
 ];
-
-
 
 export default function DataTable() {
     const productReducer = useSelector(productSelector)

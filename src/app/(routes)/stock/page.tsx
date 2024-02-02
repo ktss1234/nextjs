@@ -13,12 +13,13 @@ import { NumericFormat } from "react-number-format";
 import { Fab, IconButton, Link, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { Add, Delete, Edit } from "@mui/icons-material";
-import router from "next/router";
+import { useRouter } from "next/navigation";
+
 
 export default function StockPage() {
     const productReducer = useSelector(productSelector)
     const dispatch = useAppDispatch()
-
+    const router = useRouter();
     
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },

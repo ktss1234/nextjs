@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from 'react';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useSelector } from "react-redux";
 import { getProducts, productSelector } from "@/store/slices/productSlice";
 import { useAppDispatch } from "@/store/store";
@@ -10,8 +10,9 @@ import { productImageURL } from "@/utils/commonUtil";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { NumericFormat } from "react-number-format";
-import { Typography } from "@mui/material";
+import { Fab, Link, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { Add } from "@mui/icons-material";
 
 
 const columns: GridColDef[] = [
@@ -28,7 +29,7 @@ const columns: GridColDef[] = [
                     width={500}
                     alt="product image"
                     src={productImageURL(value)}
-                    style={{ 
+                    style={{
                         width: 70,
                         height: 70,
                         borderRadius: "5%",
@@ -81,12 +82,35 @@ const columns: GridColDef[] = [
     },
 ];
 
-export default function DataTable() {
+
+export default function StockPage() {
     const productReducer = useSelector(productSelector)
     const dispatch = useAppDispatch()
     React.useEffect(() => {
         dispatch(getProducts())
     }, [dispatch])
+    const CustomToolbar: React.FunctionComponent<{
+        setFilterButtonEl: React.Dispatch<
+            React.SetStateAction<HTMLButtonElement | null>
+        >;
+    }> = ({ setFilterButtonEl }) => (
+        <GridToolbarContainer>
+            <GridToolbarFilterButton ref={setFilterButtonEl} />
+            <Link href="/stock/add">
+                <Fab
+                    color="primary"
+                    aria-label="add"
+                    sx={{
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                    }}
+                >
+                    <Add />
+                </Fab>
+            </Link>
+        </GridToolbarContainer>
+    );
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -98,8 +122,10 @@ export default function DataTable() {
                     },
                 }}
                 pageSizeOptions={[5, 10]}
+                slots={{ toolbar: CustomToolbar }}
             // checkboxSelection
             />
         </div>
     );
+
 }

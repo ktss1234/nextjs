@@ -1,16 +1,49 @@
 "use client";
-import { ProductData } from "@/models/product.model";
+
 import { Card, CardContent, Typography, TextField, Box, CardActions, Button } from "@mui/material";
-import router from "next/router";
+
 import React from 'react'
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
-
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ProductData } from "@/models/product.model";
+import { useAppDispatch } from "@/store/store";
+import { useRouter } from "next/navigation";
 type Props = {}
+
+const formValidateSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required").trim(),
+  price: Yup.number().min(100, "Number must be greater than 100"),
+  stock: Yup.number().min(100, "Number must be greater than 100"),
+});
 
 export default function StockCreate
   ({ }: Props) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const initialValue: ProductData = { name: "", price: 1500, stock: 9999 };
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<ProductData>({
+    defaultValues: initialValue,
+    //@ts-ignore
+    resolver: yupResolver(formValidateSchema),
+  });
 
+  const onSubmit = async (values: ProductData) => {
+    alert(JSON.stringify(values))
+    // const result = await dispatch(addProduct(values));
+    // if (result.meta.requestStatus == "fulfilled") {
+    //   router.push("/stock");
+    // } else {
+    //   alert("Add failed");
+    // }
+  };
 
   const showPreviewImage = () => {
 
@@ -26,61 +59,83 @@ export default function StockCreate
   };
 
   return (
-    <form onSubmit={() => { }} >
+    <form onSubmit={handleSubmit(onSubmit)} >
       <Card>
         <CardContent className="p-8">
           <Typography gutterBottom variant="h3">
             Create Product
           </Typography>
 
-
-          <TextField
-
-            label="Name"
-            // error={Boolean(errors.name?.message)}
-            // helperText={errors.name?.message?.toString()}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            autoFocus
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Name"
+                error={Boolean(errors.name?.message)}
+                helperText={errors.name?.message?.toString()}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                autoFocus
+              />
+            )}
           />
 
+          <Controller
+            control={control}
+            name="price"
+            render={({ field }) => (
 
-          <TextField
-
-            label="Price"
-            // error={Boolean(errors.price?.message)}
-            // helperText={errors.price?.message?.toString()}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            autoFocus
+              <TextField
+                {...field}
+                label="Price"
+                error={Boolean(errors.price?.message)}
+                helperText={errors.price?.message?.toString()}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                autoFocus
+              />
+            )}
           />
-
-
-          <TextField
-
-            label="Stock"
-            // error={Boolean(errors.stock?.message)}
-            // helperText={errors.stock?.message?.toString()}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            autoFocus
+          <Controller
+            control={control}
+            name="stock"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Stock"
+                error={Boolean(errors.stock?.message)}
+                helperText={errors.stock?.message?.toString()}
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                autoFocus
+              />)}
           />
 
           <Box>{showPreviewImage()}</Box>
+          <Controller
+            control={control}
+            name="file"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                className="mt-4"
+                type="file"
+                fullWidth
+                onChange={(e: React.ChangeEvent<any>) => {
+                  //   e.preventDefault();
+                  //   setValue("file", e.target.files[0]); // for upload
+                  //   setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
+                }}
+              />
 
-          <TextField
-            className="mt-4"
-            type="file"
-            fullWidth
-            onChange={(e: React.ChangeEvent<any>) => {
-              e.preventDefault();
-              // setValue("file", e.target.files[0]); // for upload
-              // setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
-            }}
-          />
+            )} />
+
+
         </CardContent>
         <CardActions>
           <Button

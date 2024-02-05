@@ -45,17 +45,19 @@ export default function StockCreate
     // }
   };
 
-  const showPreviewImage = () => {
+  const watchPreviewImage = watch("file_obj");
 
-    return (
-      <Image
-        alt=""
-        src="/static/img/cm_logo.png"
-        width={100}
-        height={100}
-      />
-    );
-    // }
+  const showPreviewImage = () => {
+    if (watchPreviewImage) {
+      return (
+        <Image
+          alt=""
+          src={watchPreviewImage.toString()}
+          width={100}
+          height={100}
+        />
+      );
+    }
   };
 
   return (
@@ -117,23 +119,18 @@ export default function StockCreate
           />
 
           <Box>{showPreviewImage()}</Box>
-          <Controller
-            control={control}
-            name="file"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                className="mt-4"
-                type="file"
-                fullWidth
-                onChange={(e: React.ChangeEvent<any>) => {
-                  //   e.preventDefault();
-                  //   setValue("file", e.target.files[0]); // for upload
-                  //   setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
-                }}
-              />
 
-            )} />
+          <TextField
+   
+            className="mt-4"
+            type="file"
+            fullWidth
+            onChange={(e: React.ChangeEvent<any>) => {
+                e.preventDefault();
+                setValue("file", e.target.files[0]); // for upload
+                setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
+            }}
+          />
 
 
         </CardContent>

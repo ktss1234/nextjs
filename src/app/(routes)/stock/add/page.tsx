@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ProductData } from "@/models/product.model";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/navigation";
+import { addProduct } from "@/store/slices/productSlice"
 type Props = {}
 
 const formValidateSchema = Yup.object().shape({
@@ -36,13 +37,13 @@ export default function StockCreate
   });
 
   const onSubmit = async (values: ProductData) => {
-    alert(JSON.stringify(values))
-    // const result = await dispatch(addProduct(values));
-    // if (result.meta.requestStatus == "fulfilled") {
-    //   router.push("/stock");
-    // } else {
-    //   alert("Add failed");
-    // }
+
+    const result = await dispatch(addProduct(values));
+    if (result.meta.requestStatus == "fulfilled") {
+      router.push("/stock");
+    } else {
+      alert("Add failed");
+    }
   };
 
   const watchPreviewImage = watch("file_obj");
@@ -121,14 +122,14 @@ export default function StockCreate
           <Box>{showPreviewImage()}</Box>
 
           <TextField
-   
+
             className="mt-4"
             type="file"
             fullWidth
             onChange={(e: React.ChangeEvent<any>) => {
-                e.preventDefault();
-                setValue("file", e.target.files[0]); // for upload
-                setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
+              e.preventDefault();
+              setValue("file", e.target.files[0]); // for upload
+              setValue("file_obj", URL.createObjectURL(e.target.files[0])); // for preview image
             }}
           />
 

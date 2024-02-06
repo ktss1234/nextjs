@@ -14,13 +14,19 @@ import { Fab, IconButton, Link, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { userSelector } from "@/store/slices/userSlice";
+import { ProductData } from "@/models/product.model";
 
 
 export default function StockPage() {
     const productReducer = useSelector(productSelector)
+    const userRedeucer = useSelector(userSelector)
     const dispatch = useAppDispatch()
     const router = useRouter();
-    
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [selectedProduct, setSelectedProduct] = React.useState<ProductData | null>(
+        null
+    );
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -103,8 +109,8 @@ export default function StockPage() {
                         aria-label="delete"
                         size="large"
                         onClick={() => {
-                            // setSelectedProduct(row);
-                            // setOpenDialog(true);
+                            setSelectedProduct(row);
+                            setOpenDialog(true);
                         }}
                     >
                         <Delete fontSize="inherit" />
@@ -117,8 +123,9 @@ export default function StockPage() {
 
 
     React.useEffect(() => {
-        dispatch(getProducts())
-    }, [dispatch])
+        if (!userRedeucer.isAuthenticating) { dispatch(getProducts()) }
+
+    }, [dispatch, userRedeucer.isAuthenticating])
     const CustomToolbar: React.FunctionComponent<{
         setFilterButtonEl: React.Dispatch<
             React.SetStateAction<HTMLButtonElement | null>

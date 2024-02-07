@@ -10,13 +10,14 @@ import { productImageURL } from "@/utils/commonUtil";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { NumericFormat } from "react-number-format";
-import { Box, Fab, Grid, IconButton, Link, Stack, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, IconButton, Link, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { Add, AddShoppingCart, AssignmentReturn, Delete, Edit, NewReleases, Star } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { userSelector } from "@/store/slices/userSlice";
 import { ProductData } from "@/models/product.model";
 import StockCard from "@/app/_conponents/common/StockCard";
+
 
 
 
@@ -121,8 +122,34 @@ export default function StockPage() {
             ),
         },
     ];
+    const handleClose = () => {
+        setOpenDialog(false)
+    }
 
-
+    const showdemodialog = () => {
+        return (<Dialog
+            open={openDialog}
+            onClose={(handleClose)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">
+                {"Use Google's location service?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Let Google help apps determine location. This means sending anonymous
+                    location data to Google, even when no apps are running.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose} autoFocus>
+                    Agree
+                </Button>
+            </DialogActions>
+        </Dialog>)
+    }
 
     React.useEffect(() => {
         if (!userRedeucer.isAuthenticating) { dispatch(getProducts()) }
@@ -202,7 +229,7 @@ export default function StockPage() {
                 pageSizeOptions={[5, 10]}
                 slots={{ toolbar: CustomToolbar }}
             // checkboxSelection
-            />
+            />{showdemodialog()}
         </Box>
     );
 

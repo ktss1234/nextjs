@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarContainer, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useSelector } from "react-redux";
-import { getProducts, productSelector } from "@/store/slices/productSlice";
+import { getProducts, productSelector, deleteProduct } from "@/store/slices/productSlice";
 import { useAppDispatch } from "@/store/store";
 import Image from "next/image"
 import { productImageURL } from "@/utils/commonUtil";
@@ -122,33 +122,57 @@ export default function StockPage() {
             ),
         },
     ];
-    const handleClose = () => {
-        setOpenDialog(false)
-    }
 
-    const showdemodialog = () => {
-        return (<Dialog
-            open={openDialog}
-            onClose={(handleClose)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Let Google help apps determine location. This means sending anonymous
-                    location data to Google, even when no apps are running.
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>Disagree</Button>
-                <Button onClick={handleClose} autoFocus>
-                    Agree
-                </Button>
-            </DialogActions>
-        </Dialog>)
+    const handleDeleteConfirm = async () => {
+        if (selectedProduct) {
+            const result = await dispatch(deleteProduct(String(selectedProduct.id)));
+            if (result.meta.requestStatus == "fulfilled") {
+                dispatch(getProducts());
+                setOpenDialog(false);
+            } else {
+                alert("Failed to delete");
+            }
+        }
+    };
+
+    const opendialog = () => {
+        if (selectedProduct === null) {
+            return;
+        }
+        return (
+            <Dialog
+                open={openDialog}
+                keepMounted
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">
+                    <Image
+                        width={100}
+                        height={100}
+                        alt="product image"
+                        src={productImageURL(selectedProduct.image)}
+                        style={{ width: 100, borderRadius: "5%", objectFit: "cover" }}
+                    />
+                    <br />
+                    Confirm to delete the product? : {selectedProduct.name}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        You cannot restore deleted product.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDialog(false)} color="info">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDeleteConfirm} color="primary">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+
     }
 
     React.useEffect(() => {
@@ -229,7 +253,7 @@ export default function StockPage() {
                 pageSizeOptions={[5, 10]}
                 slots={{ toolbar: CustomToolbar }}
             // checkboxSelection
-            />{showdemodialog()}
+            />{opendialog()}
         </Box>
     );
 

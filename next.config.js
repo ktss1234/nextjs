@@ -2,9 +2,23 @@
 const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
-    domains: ["www.codemobiles.com", "localhost"],
+
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.codemobiles.com",
+        port: "",
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        
+        port: '8085',
+        pathname: '/images/**',
+      },
+    ],
     minimumCacheTTL: 0,
   },
 };
 
-module.exports = nextConfig
+module.exports = nextConfig;

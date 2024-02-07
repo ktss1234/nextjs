@@ -10,12 +10,14 @@ import { productImageURL } from "@/utils/commonUtil";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { NumericFormat } from "react-number-format";
-import { Fab, IconButton, Link, Stack, Typography } from "@mui/material";
+import { Box, Fab, Grid, IconButton, Link, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import { Add, Delete, Edit } from "@mui/icons-material";
+import { Add, AddShoppingCart, AssignmentReturn, Delete, Edit, NewReleases, Star } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { userSelector } from "@/store/slices/userSlice";
 import { ProductData } from "@/models/product.model";
+import StockCard from "@/app/_conponents/common/StockCard";
+
 
 
 export default function StockPage() {
@@ -149,20 +151,59 @@ export default function StockPage() {
         </GridToolbarContainer>
     );
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <Box style={{ height: 400, width: '100%' }}>
+            {/* Cards */}
+            <Grid container style={{ marginBottom: 16 }} spacing={7}>
+                <Grid item lg={3} md={6} sm={12}>
+                    <StockCard
+                        icon={AddShoppingCart}
+                        title="TOTAL"
+                        subtitle="112 THB"
+                        color="#00a65a"
+                    />
+                </Grid>
+
+                <Grid item lg={3} md={6} sm={12}>
+                    <StockCard
+                        icon={NewReleases}
+                        title="EMPTY"
+                        subtitle="9 PCS."
+                        color="#f39c12"
+                    />
+                </Grid>
+
+                <Grid item lg={3} md={6} sm={12}>
+                    <StockCard
+                        icon={AssignmentReturn}
+                        title="RETURN"
+                        subtitle="1 PCS."
+                        color="#dd4b39"
+                    />
+                </Grid>
+
+                <Grid item lg={3} md={6} sm={12}>
+                    <StockCard
+                        icon={Star}
+                        title="LOSS"
+                        subtitle="5 PCS."
+                        color="#00c0ef"
+                    />
+                </Grid>
+            </Grid>
             <DataGrid
+                sx={{ backgroundColor: "white", height: "70vh" }}
                 rows={productReducer.product}
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 0, pageSize: 5 },
+                        paginationModel: { page: 0, pageSize: 10 },
                     },
                 }}
                 pageSizeOptions={[5, 10]}
                 slots={{ toolbar: CustomToolbar }}
             // checkboxSelection
             />
-        </div>
+        </Box>
     );
 
 }

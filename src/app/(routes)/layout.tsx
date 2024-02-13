@@ -1,6 +1,6 @@
 "use client"
 import Box from "@mui/material/Box";
-import React from "react";
+import React, { Suspense } from "react";
 import Header from "../_conponents/layout/Header";
 import SideBar from "../_conponents/layout/Sidebar";
 import DrawerHeader from "../_conponents/layout/DrawerHeader";
@@ -47,11 +47,14 @@ export default function ExamplesLayout({ children }: Props) {
             <Box sx={{ display: 'flex' }}>
                 <Header open={open} handleDrawerOpen={handleDrawerOpen} />
                 <SideBar open={open} handleDrawerClose={handleDrawerClose} />
+
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     {/* <Main open={open}>
                         <DrawerHeader />
                         {children}</Main> */}
-                    <DrawerHeader />{children}
+                    <DrawerHeader />
+                    {/* <Suspense fallback={<span>12wdqqw3</span>}>{children}</Suspense> */}
+                    {children}
                 </Box>
 
             </Box></section>

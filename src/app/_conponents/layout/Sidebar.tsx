@@ -27,6 +27,7 @@ import {
     Inbox,
     ChevronLeft,
     ChevronRight,
+    Shop2Outlined,
 } from "@mui/icons-material";
 
 const drawerWidth = 240;
@@ -71,6 +72,7 @@ const Drawer = styled(MuiDrawer, {
 const routesList = [
     { pathname: "/stock", text: "Stock", icon: <Layers /> },
     { pathname: "/report", text: "Report", icon: <BarChart /> },
+    { pathname: "/shop", text: "Shop", icon: <Shop2Outlined /> },
     { pathname: "/aboutus", text: "About us", icon: <Person /> },
 ];
 const CustomLink = styled(

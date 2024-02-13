@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { Box } from "@mui/material";
 
 function getRamdomBetween0And1000() {
   const randomNumber = Math.random();
@@ -53,16 +54,19 @@ export const data = {
     {
       label: 'Dataset 1',
       data: labels.map(() => getRamdomBetween0And1000()),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
     {
       label: 'Dataset 2',
       data: labels.map(() => getRamdomBetween0And1000()),
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
 export default function Report() {
-  return <Bar options={options} data={data} />;
+  return <Box className="h-[300px]">
+    <Bar options={options} data={data} />
+  </Box>
+
 }

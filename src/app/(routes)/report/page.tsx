@@ -49,6 +49,7 @@ const ReportPage = () => {
   const [chartType, setChartType] = useState<string>("bar");
   const [chartData1, setChartData1] = useState([]);
   const [chartData2, setChartData2] = useState([]);
+  // throw new Error("");
 
   const data: any = {
     labels: labels,

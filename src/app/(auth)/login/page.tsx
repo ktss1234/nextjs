@@ -1,5 +1,5 @@
 "use client"
-import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button, Alert } from "@mui/material"
+import { Box, Card, CardContent, InputAdornment, TextField, Typography, Button, Alert, CardMedia } from "@mui/material"
 import React from 'react'
 import * as Icons from "@mui/icons-material/";
 import { Controller, useForm } from "react-hook-form";
@@ -114,6 +114,11 @@ export default function Login({ }: Props) {
   return (
     <Box className="flex justify-center items-center">
       <Card className="max-w-[345px] mt-[100px]">
+        <CardMedia
+          sx={{ height: 200 }}
+          image="/static/img/next_login.jpg"
+          title="Contemplative Reptile"
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             Login({reducer.count})

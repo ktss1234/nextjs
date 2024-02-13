@@ -38,7 +38,7 @@ const chartOption: any = {
       ticks: {
         beginAtZero: true,
         callback: function (value: any, index: any, values: any) {
-          return "฿" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          return "บาท" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
       },
     },

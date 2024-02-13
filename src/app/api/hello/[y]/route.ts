@@ -6,7 +6,6 @@
 // export const preferredRegion = 'auto'
 
 import { ACCESS_TOKEN_KEY } from "@/utils/constant";
-import httpClient from "@/src/utils/httpClient";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 

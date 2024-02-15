@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { userSelector } from "@/store/slices/userSlice";
 import { ProductData } from "@/models/product.model";
 import StockCard from "@/app/_conponents/common/StockCard";
-
+import { Metadata } from "next";
 
 
 

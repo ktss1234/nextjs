@@ -1,5 +1,6 @@
 import React from 'react'
 import ReportForm from "./ReportForm"
+import { Metadata } from "next";
 
 type Props = {}
 

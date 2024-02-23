@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   images: {
     dangerouslyAllowSVG: true,
-
     remotePatterns: [
       {
         protocol: "https",
@@ -10,11 +10,11 @@ const nextConfig = {
         port: "",
       },
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        
-        port: '8085',
-        pathname: '/images/**',
+        protocol: "http",
+        hostname: "localhost",
+
+        port: "8085",
+        pathname: "/images/**",
       },
     ],
     minimumCacheTTL: 0,
